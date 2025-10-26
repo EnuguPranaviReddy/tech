@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products - TechStore</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #e6e6e6;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #111;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 24px;
+      color: #00eaff;
+      font-weight: bold;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    .nav-links a {
+      color: #e6e6e6;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .active {
+      color: #00eaff;
+    }
+    .search-bar {
+      text-align: center;
+      margin: 20px 0 40px;
+    }
+    .search-bar input {
+      width: 60%;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #00eaff;
+      background: #0d1117;
+      color: #e6e6e6;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    .search-bar input:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
+    }
+    .products-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding-bottom: 50px;
+    }
+    .product-card {
+      border: 1px solid #222;
+      border-radius: 10px;
+      background: #121212;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      width: 230px;
+      transition: 0.3s;
+    }
+    .product-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(0, 234, 255, 0.2);
+    }
+    .product-card img {
+      width: 100%;
+      border-radius: 10px;
+      height: 180px;
+      object-fit: cover;
+    }
+    .product-card .btn {
+      background: #00eaff;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+    }
+    .product-card .btn-wishlist {
+      background: #ff4081;
+      color: #fff;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">TechStore</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html" class="active">Products</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+    <li><a href="#" onclick="logout()" class="logout-btn">Logout</a></li>
+  </ul>
+</header>
+
+<section class="products-section">
+  <h2 style="text-align:center;">Our Tech Products</h2>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for products..." />
+  </div>
+
+  <div class="products-container" id="productGrid">
+
+    <!-- Products List -->
+    <script>
+      const productList = [
+        {id:1,name:"Laptop",price:54999,img:"https://images.unsplash.com/photo-1593642532400-2682810df593?auto=format&fit=crop&w=500&q=60"},
+        {id:2,name:"Gaming PC",price:89999,img:"https://images.pexels.com/photos/1579240/pexels-photo-1579240.jpeg"},
+        {id:3,name:"Graphics Card (RTX 4070)",price:65999,img:"https://images.pexels.com/photos/18338304/pexels-photo-18338304.jpeg"},
+        {id:4,name:"Gaming Mouse",price:1999,img:"https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg"},
+        {id:5,name:"Mechanical Keyboard",price:3499,img:"https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=500&q=60"},
+        {id:6,name:"27\" LED Monitor",price:11999,img:"https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg"},
+        {id:7,name:"Headphones",price:3999,img:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=60"},
+        {id:8,name:"Wireless Earbuds",price:2999,img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=500&q=60"},
+        {id:9,name:"Smartphone",price:27999,img:"https://images.pexels.com/photos/4065906/pexels-photo-4065906.jpeg"},
+        {id:10,name:"Tablet",price:19999,img:"https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg"},
+        {id:11,name:"Smart Watch",price:4999,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=60"},
+        {id:12,name:"Drone Camera",price:45999,img:"https://images.pexels.com/photos/724921/pexels-photo-724921.jpeg"},
+        {id:13,name:"DSLR Camera",price:49999,img:"https://images.pexels.com/photos/51383/photo-camera-subject-photographer-51383.jpeg"},
+        {id:14,name:"Power Bank",price:2499,img:"https://images.pexels.com/photos/518530/pexels-photo-518530.jpeg"},
+        {id:15,name:"Portable SSD",price:8999,img:"https://images.pexels.com/photos/13595094/pexels-photo-13595094.jpeg"},
+        {id:16,name:"HD Webcam",price:2999,img:"https://images.pexels.com/photos/28940577/pexels-photo-28940577.jpeg"},
+        {id:17,name:"Smart Bulb",price:999,img:"https://images.pexels.com/photos/28940484/pexels-photo-28940484.jpeg"},
+        {id:18,name:"Smart Speaker",price:6999,img:"https://images.pexels.com/photos/1666313/pexels-photo-1666313.jpeg"},
+        {id:19,name:"VR Headset",price:29999,img:"https://images.pexels.com/photos/34444232/pexels-photo-34444232.jpeg"},
+        {id:20,name:"Wi-Fi 6 Router",price:4499,img:"https://images.pexels.com/photos/28348054/pexels-photo-28348054.jpeg"},
+      ];
+
+      const productGrid = document.getElementById('productGrid');
+
+      productList.forEach(p=>{
+        const div = document.createElement('div');
+        div.classList.add('product-card');
+        div.innerHTML = `
+          <img src="${p.img}" alt="${p.name}" />
+          <h3>${p.name}</h3>
+          <p>Check out this awesome product.</p>
+          <div class="price">₹${p.price.toLocaleString()}</div>
+          <button class="btn" onclick="addToCart(${p.id},'${p.name}',${p.price},this)">Add to Cart</button>
+          <button class="btn btn-wishlist" onclick="addToWishlist(${p.id},'${p.name}',${p.price},this)">Add to Wishlist</button>
+        `;
+        productGrid.appendChild(div);
+      });
+    </script>
+  </div>
+</section>
+
+<script>
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    document.querySelectorAll('.product-card').forEach(product => {
+      const name = product.querySelector('h3').textContent.toLowerCase();
+      product.style.display = name.includes(query) ? 'block' : 'none';
+    });
+  });
+
+  // Add to Cart
+  function addToCart(id, name, price, btn) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const image = btn.closest('.product-card').querySelector('img').src;
+    const existing = cart.find(item => item.id === id);
+    if(existing) existing.quantity += 1;
+    else cart.push({id,name,price,image,quantity:1});
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    btn.textContent="Added ✓";
+    setTimeout(()=>btn.textContent="Add to Cart",1000);
+  }
+
+  // Add to Wishlist
+  function addToWishlist(id,name,price,btn){
+    const wishlist = JSON.parse(localStorage.getItem('wishlist'))||[];
+    const image = btn.closest('.product-card').querySelector('img').src;
+    if(!wishlist.find(item=>item.id===id)){
+      wishlist.push({id,name,price,image});
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      btn.textContent="Added ❤️";
+      setTimeout(()=>btn.textContent="Add to Wishlist",1000);
+    } else {
+      alert("Already in wishlist!");
+    }
+  }
+
+  // Update cart count
+  function updateCartCount(){
+    const cart = JSON.parse(localStorage.getItem('cart'))||[];
+    document.getElementById('cart-count').textContent = cart.reduce((sum,i)=>sum+i.quantity,0);
+  }
+  updateCartCount();
+
+  // Logout
+  function logout(){
+    localStorage.removeItem('user');
+    window.location.href='login.html';
+  }
+</script>
+</body>
+</html>
